@@ -14,9 +14,22 @@ const LangContext = createContext<LangContextType>({
   toggleLang: () => {},
 });
 
+function getInitialLang(): Lang {
+  if (typeof window === "undefined") return "pt";
+  const stored = localStorage.getItem("lang");
+  return stored === "en" ? "en" : "pt";
+}
+
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>("pt");
-  const toggleLang = () => setLang((l) => (l === "pt" ? "en" : "pt"));
+  const [lang, setLang] = useState<Lang>(getInitialLang);
+
+  const toggleLang = () => {
+    setLang((l) => {
+      const next = l === "pt" ? "en" : "pt";
+      localStorage.setItem("lang", next);
+      return next;
+    });
+  };
 
   return (
     <LangContext.Provider value={{ lang, toggleLang }}>
@@ -28,4 +41,3 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
 export function useLang() {
   return useContext(LangContext);
 }
-

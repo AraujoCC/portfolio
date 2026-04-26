@@ -30,9 +30,9 @@ const content = {
         num: "00.2",
         title: "Projetos em destaque",
         links: [
-          { label: "QueueFlow", sub: "gestão de filas hospitalares", href: "https://github.com/AraujoCC", external: true },
-          { label: "Ticket Reservation API", sub: "concorrência real com Kafka e Stripe", href: "https://github.com/AraujoCC", external: true },
-          { label: "HayhGang", sub: "e-commerce em produção", href: "https://github.com/AraujoCC", external: true },
+          { label: "QueueFlow", sub: "gestão de filas hospitalares", href: "https://github.com/AraujoCC/QueueFlow", external: true },
+          { label: "Ticket Reservation API", sub: "concorrência real com Kafka e Stripe", href: "https://github.com/AraujoCC/ticket-reservation", external: true },
+          { label: "HayhGang", sub: "e-commerce em produção", href: "https://github.com/AraujoCC/hayhgang", external: true },
         ],
       },
     ],
@@ -63,9 +63,9 @@ const content = {
         num: "00.2",
         title: "Featured projects",
         links: [
-          { label: "QueueFlow", sub: "hospital queue management", href: "https://github.com/AraujoCC", external: true },
-          { label: "Ticket Reservation API", sub: "real concurrency with Kafka and Stripe", href: "https://github.com/AraujoCC", external: true },
-          { label: "HayhGang", sub: "e-commerce in production", href: "https://github.com/AraujoCC", external: true },
+          { label: "QueueFlow", sub: "hospital queue management", href: "https://github.com/AraujoCC/QueueFlow", external: true },
+          { label: "Ticket Reservation API", sub: "real concurrency with Kafka and Stripe", href: "https://github.com/AraujoCC/ticket-reservation", external: true },
+          { label: "HayhGang", sub: "e-commerce in production", href: "https://github.com/AraujoCC/hayhgang", external: true },
         ],
       },
     ],
@@ -77,55 +77,60 @@ export default function Home() {
   const t = content[lang];
 
   return (
-    <div className="px-8 py-20 lg:px-16 max-w-2xl">
-      {/* Lang toggle mobile */}
-      <button
-        onClick={toggleLang}
-        className="absolute top-4 right-6 text-xs text-white/30 hover:text-white/70 transition-colors tracking-widest lg:hidden"
-      >
-        {lang === "pt" ? "PT / EN" : "EN / PT"}
-      </button>
-
-      {/* Header */}
-      <h1 className="text-2xl font-bold mb-1">pedro isaac</h1>
-      <p className="text-sm text-white/40 mb-16">{t.role}</p>
-
-      {/* Sections */}
-      <div className="space-y-14">
-        {t.sections.map((section) => (
-          <div key={section.num}>
-            <div className="flex items-baseline gap-3 mb-5">
-              <span className="text-xs text-white/20">{section.num}</span>
-              <h2 className="text-sm font-bold text-white/60 uppercase tracking-widest">
-                {section.title}
-              </h2>
-            </div>
-
-            <ul className="space-y-3">
-              {section.links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
-                    className="flex items-baseline gap-3 group"
-                  >
-                    <span className="text-sm text-white group-hover:text-white transition-colors">
-                      {link.label}
-                    </span>
-                    <span className="text-xs text-white/25 group-hover:text-white/50 transition-colors">
-                      {link.sub}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <div className="min-h-[calc(100vh-3.5rem)] lg:min-h-screen flex flex-col">
+      {/* Top bar — PT/EN only here */}
+      <div className="flex justify-end px-8 pt-8 lg:px-16">
+        <button
+          onClick={toggleLang}
+          className="text-xs text-white/30 hover:text-white/60 transition-colors tracking-widest"
+        >
+          {lang === "pt" ? "PT / EN" : "EN / PT"}
+        </button>
       </div>
 
-      {/* Footer */}
-      <p className="mt-20 text-xs text-white/15">pedroigaldino.vercel.app</p>
+      {/* Main content */}
+      <div className="flex-1 flex flex-col justify-center px-8 py-12 lg:px-16">
+        <div className="max-w-xl w-full">
+          {/* Header */}
+          <h1 className="text-2xl font-normal mb-1 text-white">{lang === "pt" ? "pedro isaac" : "pedro isaac"}</h1>
+          <p className="text-xs text-white/30 mb-14 tracking-widest uppercase">{t.role}</p>
+
+          {/* Sections */}
+          <div className="space-y-12">
+            {t.sections.map((section) => (
+              <div key={section.num}>
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="text-xs text-white/20 font-mono">{section.num}</span>
+                  <h2 className="text-xs text-white/30 tracking-widest uppercase">
+                    {section.title}
+                  </h2>
+                </div>
+
+                <ul>
+                  {section.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        target={link.external ? "_blank" : undefined}
+                        rel={link.external ? "noopener noreferrer" : undefined}
+                        className="flex items-center gap-3 py-2 group border-b border-white/5 hover:border-white/10 transition-colors"
+                      >
+                        <span className="text-sm font-normal text-white/70 group-hover:text-white transition-colors whitespace-nowrap">
+                          {link.label}
+                        </span>
+                        <span className="flex-1 border-b border-dotted border-white/10 group-hover:border-white/20 transition-colors" />
+                        <span className="text-xs text-white/25 group-hover:text-white/50 transition-colors whitespace-nowrap">
+                          {link.sub}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -58,16 +58,6 @@ export default function Nav() {
             );
           })}
         </ul>
-
-        {/* Lang toggle — bottom on desktop, hidden on mobile nav (shown in page) */}
-        <div className="hidden lg:flex lg:mt-auto lg:pt-8">
-          <button
-            onClick={toggleLang}
-            className="text-xs text-white/30 hover:text-white/70 transition-colors tracking-widest"
-          >
-            {lang === "pt" ? "PT / EN" : "EN / PT"}
-          </button>
-        </div>
       </div>
     </nav>
   );
