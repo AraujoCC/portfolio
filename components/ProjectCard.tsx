@@ -2,34 +2,69 @@ import Link from "next/link";
 
 interface ProjectCardProps {
   title: string;
+  status: string;
   description: string;
+  descriptionEn?: string;
   tags: string[];
-  href: string;
+  href?: string;
+  repo?: string;
+  lang?: "pt" | "en";
 }
 
 export default function ProjectCard({
   title,
+  status,
   description,
+  descriptionEn,
   tags,
   href,
+  repo,
+  lang = "pt",
 }: ProjectCardProps) {
+  const desc = lang === "en" && descriptionEn ? descriptionEn : description;
+
   return (
-    <Link
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block border border-white/10 p-6 transition-colors hover:border-white/30"
-    >
-      <h3 className="mb-2 text-lg font-bold">{title}</h3>
-      <p className="mb-4 text-sm text-white/60">{description}</p>
-      <div className="flex flex-wrap gap-3">
+    <div className="border border-white/10 p-6 flex flex-col gap-4 hover:border-white/20 transition-colors">
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="font-bold text-white">{title}</h3>
+        <span className="text-xs text-white/30 shrink-0 mt-0.5">{status}</span>
+      </div>
+
+      <p className="text-sm text-white/60 leading-relaxed">{desc}</p>
+
+      <div className="flex flex-wrap gap-2">
         {tags.map((tag) => (
-          <span key={tag} className="text-xs text-white/40">
+          <span
+            key={tag}
+            className="text-xs text-white/40 border border-white/10 px-2 py-0.5"
+          >
             {tag}
           </span>
         ))}
       </div>
-    </Link>
+
+      {(href || repo) && (
+        <div className="flex gap-4 mt-auto pt-2">
+          {repo && (
+            <Link
+              href={repo}
+              target="_blank"
+              className="text-xs text-white/40 hover:text-white transition-colors"
+            >
+              → repo
+            </Link>
+          )}
+          {href && href !== "#" && (
+            <Link
+              href={href}
+              target="_blank"
+              className="text-xs text-white/40 hover:text-white transition-colors"
+            >
+              → live
+            </Link>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
-
