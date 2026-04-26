@@ -1,57 +1,86 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { useLang } from "@/context/LangContext";
+
+const content = {
+  pt: {
+    heading: "04. contato",
+    subtitle: "aberto para oportunidades júnior em fintech ou startup de produto.",
+    copied: "copiado!",
+    copy: "copiar email",
+    links: [
+      { label: "github", href: "https://github.com/AraujoCC" },
+      { label: "linkedin", href: "https://linkedin.com/in/devgaldino" },
+    ],
+  },
+  en: {
+    heading: "04. contact",
+    subtitle: "open to junior opportunities at fintechs or product startups.",
+    copied: "copied!",
+    copy: "copy email",
+    links: [
+      { label: "github", href: "https://github.com/AraujoCC" },
+      { label: "linkedin", href: "https://linkedin.com/in/devgaldino" },
+    ],
+  },
+};
+
+const EMAIL = "pedroisaacofc@gmail.com";
 
 export default function Contact() {
+  const { lang } = useLang();
+  const t = content[lang];
   const [copied, setCopied] = useState(false);
 
-  const copyEmail = async () => {
-    await navigator.clipboard.writeText("seu@email.com");
+  const handleCopy = () => {
+    navigator.clipboard.writeText(EMAIL);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="px-6 py-24 lg:px-24">
-      <h1 className="mb-12 text-3xl font-bold">04. contato</h1>
+    <div className="px-8 py-20 lg:px-16">
+      <h1 className="mb-2 text-2xl font-bold">{t.heading}</h1>
+      <p className="mb-12 text-sm text-white/40">{t.subtitle}</p>
 
-      <div className="max-w-xl space-y-8">
-        <div>
-          <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-white/40">
-            email
-          </h2>
-          <button
-            onClick={copyEmail}
-            className="text-lg text-white/70 transition-colors hover:text-white"
-          >
-            {copied ? "copiado!" : "seu@email.com"}
-          </button>
-        </div>
-
-        <div>
-          <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-white/40">
-            redes
-          </h2>
-          <div className="flex flex-col gap-3">
+      <div className="max-w-sm space-y-6">
+        {/* Email */}
+        <div className="border border-white/10 p-5 flex flex-col gap-3">
+          <span className="text-sm text-white/70">{EMAIL}</span>
+          <div className="flex gap-4">
             <Link
-              href="https://github.com"
-              target="_blank"
-              className="text-white/70 transition-colors hover:text-white"
+              href={`mailto:${EMAIL}`}
+              className="text-xs text-white/40 hover:text-white transition-colors"
             >
-              → github
+              → abrir email
             </Link>
-            <Link
-              href="https://linkedin.com"
-              target="_blank"
-              className="text-white/70 transition-colors hover:text-white"
+            <button
+              onClick={handleCopy}
+              className="text-xs text-white/40 hover:text-white transition-colors"
             >
-              → linkedin
-            </Link>
+              → {copied ? t.copied : t.copy}
+            </button>
           </div>
         </div>
+
+        {/* Other links */}
+        <ul className="space-y-3">
+          {t.links.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-white/50 hover:text-white transition-colors"
+              >
+                → {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
-
